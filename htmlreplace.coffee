@@ -6,34 +6,35 @@ async = require 'async'
 jsdom = require 'jsdom'
 minimist = require 'minimist'
 wrench = require 'wrench'
+
 opt = minimist process.argv.slice 2
 file = opt._[0]
-o = do ->
+o = (d) ->
   (k, v) ->
     a = {}
     a.k = v
-    if file and file[k]
-      a.k = file[k]
+    if d and d[k]
+      a.k = d[k]
     a
-
-prompt.override = opt
-
-options = do ->
-  try file = JSON.parse(fs.readFileSync file) catch e
-  r = properties:[]
-  o 'dir', '.'
-  replacement: default: '<!--# include virtual="/wp/content" wait="yes" -->'
-  selector: default: '.seo_text'
-  filter: default: '\.html?'
-  method: default: 'html'
-
-prompt.start()
 
 e = (f) -> (e, r) ->
   if e
     console.log e
     throw e
   f r
+
+prompt.override = opt
+
+options = do ->
+  try file = JSON.parse(fs.readFileSync file) catch e
+  o = o file
+  o 'dir', '.'
+  o 'replacement', '<!--# include virtual="/wp/content" wait="yes" -->'
+  o 'selector', '.seo_text'
+  o 'filter', '\.html?'
+  o 'method', 'html'
+
+prompt.start()
 
 opt = prompt.get options, e (opt) ->
   replace = (c) -> e (w) ->
