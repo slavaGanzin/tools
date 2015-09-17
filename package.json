@@ -1,0 +1,28 @@
+{
+  "name": "tools",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "jsdom": "^6.5.0",
+    "prompt": "^0.2.14",
+    "minimist": "^1.2.0",
+    "ramda": "^0.17.1",
+    "async": "^1.4.2",
+    "wrench": "^1.5.8"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/terraqout/tools.git"
+  },
+  "author": "vganzin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/terraqout/tools/issues"
+  },
+  "homepage": "https://github.com/terraqout/tools#readme"
+}
