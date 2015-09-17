@@ -9,13 +9,12 @@ wrench = require 'wrench'
 
 opt = minimist process.argv.slice 2
 file = opt._[0]
-o = (d) ->
-  (k, v) ->
-    a = {}
-    a.k = v
-    if d and d[k]
-      a.k = d[k]
-    a
+o = (d) -> (k, v) ->
+  a = {}
+  a[k] = v
+  if d and d[k]
+    a[k] = d[k]
+  a
 
 e = (f) -> (e, r) ->
   if e
@@ -28,11 +27,13 @@ prompt.override = opt
 options = do ->
   try file = JSON.parse(fs.readFileSync file) catch e
   o = o file
-  o 'dir', '.'
-  o 'replacement', '<!--# include virtual="/wp/content" wait="yes" -->'
-  o 'selector', '.seo_text'
-  o 'filter', '\.html?'
-  o 'method', 'html'
+  R.mergeAll [
+    o 'dir', '.'
+    o 'replacement', '<!--# include virtual="/wp/content" wait="yes" -->'
+    o 'selector', '.seo_text'
+    o 'filter', '\.html?'
+    o 'method', 'html'
+  ]
 
 prompt.start()
 

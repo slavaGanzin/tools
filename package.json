@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "jsdom": "^6.5.0",
-    "prompt": "^0.2.14",
-    "minimist": "^1.2.0",
-    "ramda": "^0.17.1",
     "async": "^1.4.2",
+    "jsdom": "^3.1.2",
+    "minimist": "^1.2.0",
+    "prompt": "^0.2.14",
+    "ramda": "^0.17.1",
     "wrench": "^1.5.8"
   },
   "devDependencies": {},
