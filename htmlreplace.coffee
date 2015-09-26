@@ -11,23 +11,19 @@ opt = minimist process.argv.slice 2
 file = opt._[0]
 o = (d) -> (k, v) ->
   a = {}
-  a[k] = v
+  a[k] = {}
+  a[k].default = v
   if d and d[k]
-    a[k] = d[k]
+    a[k].default = d[k]
   a
-
-e = (f) -> (e, r) ->
-  if e
-    console.log e
-    throw e
-  f r
 
 prompt.override = opt
 
 options = do ->
-  try file = JSON.parse(fs.readFileSync file) catch e
-  o = o file
-  R.mergeAll [
+  try _default = JSON.parse(fs.readFileSync file.toString()) catch e
+  o = o _default
+
+  properties: R.mergeAll [
     o 'dir', '.'
     o 'replacement', '<!--# include virtual="/wp/content" wait="yes" -->'
     o 'selector', '.seo_text'
@@ -35,26 +31,23 @@ options = do ->
     o 'method', 'html'
   ]
 
-prompt.start()
-
-opt = prompt.get options, e (opt) ->
-  replace = (c) -> e (w) ->
+opt = prompt.get options, (e, opt) ->
+  replace = (c) -> (e, w) ->
     w.$(opt.selector).each -> w.$(this)[opt.method] opt.replacement
     c w.document.documentElement.outerHTML
     w.close()
 
   processFile = (file, c) ->
     return c if fs.statSync(file).isDirectory()
-    console.log file
     jquery = fs.readFileSync __dirname+"/jquery.js", "utf-8"
     jsdom.env
       file: file
       src: [jquery]
-      done: replace R.curry(fs.writeFile) file, R._, c
+      done: replace (data) -> fs.writeFile file, data, c
 
   files = wrench.readdirSyncRecursive opt.dir
 
   prependDir = R.map (e) -> opt.dir + '/' + e
   filter = R.filter (a) -> (new RegExp opt.filter).test a
   async.each (prependDir filter files), processFile, (e)->
-    fs.writeFileSync file, JSON.stringify opt
+    fs.writeFileSync file.toString(), JSON.stringify opt, null, 2
