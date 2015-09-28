@@ -50,4 +50,4 @@ opt = prompt.get options, (e, opt) ->
   prependDir = R.map (e) -> opt.dir + '/' + e
   filter = R.filter (a) -> (new RegExp opt.filter).test a
   async.each (prependDir filter files), processFile, (e)->
-    fs.writeFileSync file.toString(), JSON.stringify opt, null, 2
+    fs.writeFileSync file.toString(), JSON.stringify opt, null, 2 if file
