@@ -1,5 +1,4 @@
 #!/usr/bin/env coffee
-__dirname
 wrench = require 'wrench'
 fs = require 'fs'
 R = require 'ramda'
